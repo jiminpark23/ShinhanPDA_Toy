@@ -8,18 +8,14 @@ from .serializers import OrderSerializer
 # Create your views here.
 
 class OrderListView(
-    mixins.ListModeMixins,
+    mixins.ListModelMixin,
     generics.GenericAPIView
 ):
     serializer_class = OrderSerializer
     
     def get_queryset(self):
-        return Order.objects.all().order_by('id')
+        return Order.objects.all().order_by('-id')
     
     def get(self, request, *args, **kwargs):
-        
-        # queryset
-        # serialize
-        # return response
         
         return self.list(request, args, kwargs)
