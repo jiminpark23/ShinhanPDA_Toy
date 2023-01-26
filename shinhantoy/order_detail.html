@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>주문 상세 페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script>
+        function writeComment() {
+            const search = new URLSearchParams(location.search);
+            const order_id = search.get('order_id'); 
+            $.ajax({
+                type: 'POST',
+                url: 'http://127.0.0.1:8000/api/order/' + order_id + '/comment',
+                data: {
+                    content: $("#content").val(),
+                    order: order_id
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Authorization", "JWT " + $("#token").val())
+                },
+                success: (result) => {
+                    alert("댓글 작성 완료");
+                    location.reload();
+                }
+            });
+
+        }
+
+        $(document).ready(function () {
+            const search = new URLSearchParams(location.search);
+            const order_id = search.get('order_id'); 
+            if (order_id > 0) {
+                $.get("http://127.0.0.1:8000/api/order/" + order_id)
+                    .then((result) => {
+                        $("#comments").html("");
+
+                        $("#ordYMD").text(result.ord_ymd);
+                        $("#acctMangDbrnCode").text(result.acct_mang_dbrn_code);
+                        $("#ordNo").text(result.ord_no);
+                        $("#acctNo").text(result.acct_no);
+                        $("#callvTypeCode").text(result.callv_type_code);
+                        $("#sellBuyTpCode").text(result.sell_buy_tp_code);
+                        $("#stbdCode").text(result.stbd_code);
+                        $("#ordQty").text(result.ord_qty);
+                        $("#ordUv").text(result.ord_uv);
+                        $("#mrgnBaseUv").text(result.mrgn_base_uv);
+                    });
+                
+                $.get("http://127.0.0.1:8000/api/order/" + order_id +"/comment")
+                    .then((result) => {
+                        $("#comments").html("");
+
+                        for (let i=0; i<result.results.length; i++) {
+                            const comment = result.results[i];
+                            $("#comments").append(
+                                $(`<li class="list-group-item">
+                                    ${comment.content}<br><br>
+                                    ${comment.member_username} (${comment.tstamp})
+                                </li>`)
+                            );
+                        }
+                    });
+
+            }
+        });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+        <ul>
+            <li>ord_ymd: <span id="ordYMD"></span></li>
+            <li>acct_mang_dbrn_code: <span id="acctMangDbrnCode"></span></li>
+            <li>ord_no: <span id="ordNo"></span></li>
+            <li>acct_no: <span id="acctNo"></span></li>
+            <li>callv_type_code: <span id="callvTypeCode"></span></li>
+            <li>sell_buy_tp_code: <span id="sellBuyTpCode"></span></li>
+            <li>stbd_code: <span id="stbdCode"></span></li>
+            <li>ord_qty: <span id="ordQty"></span></li>
+            <li>ord_uv: <span id="ordUv"></span></li>
+            <li>mrgn_base_uv: <span id="mrgnBaseUv"></span></li>
+        </ul>
+        <hr>
+        <div class="form-group mb-3">
+            <label for="content">댓글 작성</label>
+            <textarea id="content" name="content" cols="100" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+            <label for="token">토큰</label>
+            <input type="text" class="form-control" id="token" name="token" />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="writeComment()">작성</button>
+        <ul class="list-group list-group-flush" id="comments">
+            <li class="list-group-item">댓글 내용입니다.<br><br>박지민 (2023.01.25 14:21:12)</li>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
