@@ -52,8 +52,12 @@
                     }
 
                     for (let i=startpage; i<=endpage; i++) {
+                        let isActive = "";
+                        if (i == page){
+                            isActive = " active";
+                        }
                         $("#pagination").append(
-                            $(`<li class="page-item"><a class="page-link" onclick="go_page(${i})">${i}</a></li>`)
+                            $(`<li class="page-item"><a class="page-link${isActive}" onclick="go_page(${i})">${i}</a></li>`)
                         )
                     }
                     
