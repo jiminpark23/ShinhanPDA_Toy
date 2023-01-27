@@ -16,10 +16,10 @@
                         const comment = result.results[i];
                         
                         $("#comments").append(
-                            $(`<li class="list-group-item">
+                            $(`<a href="order_detail.html?order_id=${comment.id}" class="list-group-item">
                                 ${comment.ord_ymd}<br><br>
                                 ${comment.ord_no}
-                            </li>`)
+                            </a>`)
                         );
                     }
                 });
