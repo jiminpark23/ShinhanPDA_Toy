@@ -8,9 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script>
         const search = new URLSearchParams(location.search);
-        const order_id = search.get('order_id');
+        const order_id = search.get('order_id'); 
 
-        function writeComment() { 
+        function writeComment() {
             $.ajax({
                 type: 'POST',
                 url: 'http://127.0.0.1:8000/api/order/comment',
@@ -70,14 +70,15 @@
         </ul>
         <hr>
         <div class="form-group mb-3">
-            <label for="content">댓글 작성</label>
-            <textarea id="content" name="content" cols="100" rows="3"></textarea>
+            <label for="content" class="form-label">댓글 작성</label>
+            <textarea id="content" name="content" class="form-control" rows="3" placeholder="content"></textarea>
         </div>
         <div class="form-group mb-3">
             <label for="token">토큰</label>
             <input type="text" class="form-control" id="token" name="token" />
         </div>
         <button type="button" class="btn btn-primary" onclick="writeComment()">작성</button>
+        <hr>
         <ul class="list-group list-group-flush" id="comments">
             <li class="list-group-item">댓글 내용입니다.<br><br>박지민 (2023.01.25 14:21:12)</li>
         </ul>

@@ -57,8 +57,8 @@ class CommentCreateView(
     mixins.CreateModelMixin,
     generics.GenericAPIView
 ):
-    serializer_class = CommentCreateSerializer
     permission_classes = [IsAuthenticated]
+    serializer_class = CommentCreateSerializer
     
     def post(self, request, *args, **kwargs):
         return self.create(request, args, kwargs)
