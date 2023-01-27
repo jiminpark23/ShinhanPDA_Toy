@@ -79,6 +79,9 @@
 
                         if (endpage > pages) {
                             endpage = pages;
+                            if (endpage < 5){
+                                startpage = 1;
+                            }
                         }
                         
                         for (let i=startpage; i<=endpage; i++) {
